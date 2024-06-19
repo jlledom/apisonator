@@ -77,19 +77,19 @@ module TestHelpers
               end
 
               def keys(*keys)
-                non_proxied_instances.map do |i|
+                proxied_instances.map do |i|
                   i.keys(*keys)
                 end.flatten(1)
               end
 
               def flushdb
-                non_proxied_instances.map do |i|
+                proxied_instances.map do |i|
                   i.flushdb
                 end
               end
 
               def flushall
-                non_proxied_instances.map do |i|
+                proxied_instances.map do |i|
                   i.flushall
                 end
               end
@@ -115,7 +115,7 @@ module TestHelpers
 
               attr_reader :inner
 
-              def non_proxied_instances
+              def proxied_instances
                 klass = case inner
                         when ThreeScale::Backend::StorageAsync::Client
                           inner.class
@@ -126,7 +126,7 @@ module TestHelpers
                           raise 'Unknown inner storage class'
                         end
 
-                klass.non_proxied_instances
+                klass.proxied_instances
               end
             end
             private_constant :RedisClientTest
@@ -141,15 +141,15 @@ module TestHelpers
               RedisClientTest.new orig_new(options)
             end
 
-            def non_proxied_instances
-              @non_proxied_instances ||= Mock.nodes.map do |server|
+            def proxied_instances
+              @proxied_instances ||= Mock.nodes.map do |server|
                 orig_new(
                   ::ThreeScale::Backend::Storage::Helpers.config_with(
                     configuration.redis,
                     options: { url: server }))
               end
             end
-            public :non_proxied_instances
+            public :proxied_instances
           end
         end
 
@@ -159,7 +159,7 @@ module TestHelpers
             remove_method :new
             alias_method :new, :orig_new
             remove_method :orig_new
-            remove_method :non_proxied_instances
+            remove_method :proxied_instances
           end
         end
       end
