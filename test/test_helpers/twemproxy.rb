@@ -37,10 +37,6 @@ module TestHelpers
       private_constant :STORAGE_CLASSES
 
       class << self
-        def set_nodes(*nodes)
-          @nodes = nodes.flatten
-        end
-
         def nodes
           # Return original URL unless we are testing on a twemproxy
           uri = URI(ThreeScale::Backend.configuration.redis.proxy)
