@@ -42,10 +42,11 @@ module TestHelpers
         end
 
         def nodes
-          # Don't return non proxied nodes unless we are testing on a twemproxy
+          # Return original URL unless we are testing on a twemproxy
           uri = URI(ThreeScale::Backend.configuration.redis.proxy)
           return [uri.to_s] if uri.port != DEFAULT_TWEMPROXY_PORT
 
+          # Return proxied shards if testing on a twemproxy
           @nodes || DEFAULT_NODES
         end
 
