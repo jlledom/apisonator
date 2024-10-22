@@ -5,8 +5,8 @@ services:
     container_name: redis-master
     network_mode: host
     volumes:
-      - ./run:/var/run:z
-    command: [ redis-server, --port, "6379", --unixsocket, "/var/run/redis/redis.sock", --unixsocketperm, "777" ]
+      - ./run:/var/run/redis:z
+    command: [ redis-server, --port, "6379", --unixsocket, "/var/run/redis/redis.sock", --unixsocketperm, "1777" ]
 
   redis-replica1:
     image: redis:6.2-alpine
