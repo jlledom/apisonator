@@ -20,9 +20,7 @@ module ThreeScale
           # @param ssl_params [Hash]
           # @return [Async::IO::Endpoint::Generic]
           def prepare_endpoint(**kwargs)
-            return prepare_tcp_endpoint(**kwargs) if host_present?(kwargs[:host])
-
-            prepare_unix_endpoint(**kwargs)
+            host_present?(kwargs[:host]) ? prepare_tcp_endpoint(**kwargs) : prepare_unix_endpoint(**kwargs)
           end
 
           private
@@ -37,10 +35,9 @@ module ThreeScale
 
           def prepare_unix_endpoint(path: '', ssl: false, ssl_params: nil)
             unix_endpoint = Async::IO::Endpoint.unix(path, Socket::PF_UNIX)
+            return unix_endpoint unless ssl
 
-            return prepare_ssl_endpoint(endpoint: unix_endpoint, ssl_params: ssl_params) if ssl
-
-            unix_endpoint
+            prepare_ssl_endpoint(endpoint: unix_endpoint, ssl_params: ssl_params)
           end
 
           def prepare_ssl_endpoint(endpoint: nil, ssl_params: nil)
@@ -62,7 +59,7 @@ module ThreeScale
           end
 
           def host_present?(host)
-            not host.to_s.strip.empty?
+            !host.to_s.strip.empty?
           end
         end
       end
