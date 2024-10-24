@@ -25,7 +25,7 @@ module ThreeScale
           private
 
           def url_present?(url)
-            not url.to_s.strip.empty?
+            !url.to_s.strip.empty?
           end
 
           def connect_tcp(opts)
