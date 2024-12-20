@@ -75,9 +75,7 @@ module ThreeScale
         def with_reconnect
           attempt = 0
           begin
-            connect
-
-            yield @redis_async
+           yield connect
           rescue *CONNECTION_ERRORS => e
             close
 
