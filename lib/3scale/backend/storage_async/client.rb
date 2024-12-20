@@ -40,7 +40,7 @@ module ThreeScale
         end
 
         def call(*args)
-          ensure_connected do |conn|
+          with_reconnect do |conn|
             conn.call(*args)
           end
         end
@@ -54,7 +54,7 @@ module ThreeScale
           # This replaces the client with a Pipeline that accumulates the Redis
           # commands run in a block and sends all of them in a single request.
 
-          ensure_connected do |conn|
+          with_reconnect do |conn|
             pipeline = Pipeline.new
             block.call pipeline
             pipeline.run(conn)
@@ -70,7 +70,9 @@ module ThreeScale
           @redis_async = nil
         end
 
-        def ensure_connected
+        private
+
+        def with_reconnect
           attempt = 0
           begin
             connect
