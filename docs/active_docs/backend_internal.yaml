@@ -457,13 +457,6 @@ paths:
       responses:
         "200":
           description: Delete Event by ID
-  /unknown/route/no/one/would/ever/try/to/use/in/a/real/app/omg:
-    get:
-      tags:
-      - Internal API
-      responses:
-        "404":
-          description: Check that unknown routes return proper 404
   /check.json:
     get:
       tags:
