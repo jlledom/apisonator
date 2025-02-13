@@ -38,7 +38,6 @@ describe 'Events' do
     end
 
     context 'POST' do
-      let(:raw_post) { params.to_json }
       let(:current_last_event_id) do
         if ThreeScale::Backend::EventStorage.list.last
           ThreeScale::Backend::EventStorage.list.last[:id]

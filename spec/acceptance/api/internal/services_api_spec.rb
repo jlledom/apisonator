@@ -102,7 +102,6 @@ describe 'Services (prefix: /services)' do
           state: state
         }
       end
-      let(:raw_post){ params.to_json }
 
       it 'Update Service by ID' do
         put "/services/#{id}", { service: }.to_json
@@ -156,7 +155,6 @@ describe 'Services (prefix: /services)' do
     end
 
     context 'DELETE' do
-      let(:raw_post) { params.to_json }
       let(:default_service_id) { '1' }
       let(:non_default_service_id) { '2' }
 
@@ -207,7 +205,6 @@ describe 'Services (prefix: /services)' do
         state: state
       }
     end
-    let(:raw_post){ params.to_json }
 
     it 'Create a Service' do
       post '/services/', { service: }.to_json
@@ -271,7 +268,6 @@ describe 'Services (prefix: /services)' do
   context 'PUT /services/change_provider_key/:key' do
     let(:key){ 'foo' }
     let(:new_key){ 'bar' }
-    let(:raw_post) { params.to_json }
 
     it 'Changing a provider key' do
       put "/services/change_provider_key/#{key}", { new_key: }.to_json

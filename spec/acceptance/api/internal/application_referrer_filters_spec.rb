@@ -57,7 +57,6 @@ describe 'Application Referrer Filters' do
 
     context 'POST' do
       let(:referrer_filter) { 'baz' }
-      let(:raw_post) { params.to_json }
 
       it 'Create a referrer filter' do
         post "/services/#{service_id}/applications/#{app_id}/referrer_filters", { referrer_filter: }.to_json

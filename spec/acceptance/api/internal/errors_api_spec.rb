@@ -145,10 +145,6 @@ describe 'Errors (prefix: /services/:service_id/errors)' do
         %w(error_msg_#1 error_msg_#2 error_msg_#3)
       end
 
-      define_method :raw_post do
-        params.to_json
-      end
-
       context 'when the service exists' do
         it 'Save errors' do
           post "/services/#{service_id}/errors/", { errors: example_error_messages }.to_json

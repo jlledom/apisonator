@@ -88,8 +88,6 @@ describe 'Service Tokens (prefix: /service_tokens)' do
         { http_code: exc.http_code, message: exc.message }
       end
 
-      let(:raw_post) { params.to_json }
-
       it 'Create a (service_token, service_id) pair' do
         post '/service_tokens/', { service_tokens: }.to_json
 

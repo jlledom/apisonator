@@ -58,8 +58,6 @@ describe 'Application keys' do
     end
 
     context 'POST' do
-      let(:raw_post)   { params.to_json }
-
       context 'with an invalid application id' do
         it 'Trying to create an application key' do
           post "/services/#{service_id}/applications/#{invalid_app_id}/keys/"

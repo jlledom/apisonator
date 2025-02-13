@@ -49,7 +49,6 @@ describe 'Metrics (prefix: /services/:service_id/metrics)' do
           name: name,
         }
       end
-      let(:raw_post){ params.to_json }
 
       it 'Create a Metric' do
         post "/services/#{service_id}/metrics/#{id}", { metric: }.to_json
@@ -89,7 +88,6 @@ describe 'Metrics (prefix: /services/:service_id/metrics)' do
           name: name,
         }
       end
-      let(:raw_post){ params.to_json }
 
       it 'Update Metric by ID' do
         put "/services/#{service_id}/metrics/#{id}", { metric: }.to_json

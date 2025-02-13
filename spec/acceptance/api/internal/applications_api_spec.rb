@@ -60,7 +60,6 @@ describe 'Applications (prefix: /services/:service_id/applications)' do
           redirect_url: redirect_url
         }
       end
-      let(:raw_post){ params.to_json }
 
       it 'Create an Application' do
         post "/services/#{service_id}/applications/#{id}", { application: }.to_json
@@ -130,7 +129,6 @@ describe 'Applications (prefix: /services/:service_id/applications)' do
           redirect_url: redirect_url
         }
       end
-      let(:raw_post){ params.to_json }
 
       context 'with an application that exists' do
         it 'updating the application' do

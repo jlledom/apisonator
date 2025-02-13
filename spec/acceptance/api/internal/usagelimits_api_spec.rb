@@ -36,11 +36,6 @@ describe 'UsageLimits (prefix: /services/:service_id/plans/:plan_id/usagelimits)
       end
     end
 
-    # need this to _not_ be memoized but eval'ed each time, see below
-    define_method :raw_post do
-      params.to_json
-    end
-
     it 'Update UsageLimits' do
       @metric_h.each do |m, periods|
         periods.each do |p, value|

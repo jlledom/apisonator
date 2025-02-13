@@ -37,7 +37,6 @@ describe 'Alert limits' do
 
     context 'POST' do
       let(:service_id)  { '7575' }
-      let(:raw_post) { params.to_json }
 
       context 'with allowed limit value' do
         let(:alert_limit) { { value: '50' } }

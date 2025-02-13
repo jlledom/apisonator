@@ -16,8 +16,6 @@ describe 'Stats (prefix: /services/:service_id/stats)' do
       }
     }.to_json
   end
-  # From and To fields are sent as string, even though they are integers in req_body
-  let(:raw_post) { req_body }
 
   before do
     header 'Accept', 'application/json'
