@@ -931,3 +931,9 @@ components:
       example:
         usagelimit:
           year: "1001"
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
