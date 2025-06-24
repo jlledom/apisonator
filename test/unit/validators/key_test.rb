@@ -19,30 +19,30 @@ module Validators
     end
 
     test 'succeeds if no application key is defined nor passed' do
-      assert Key.apply(@status, {})
+      assert Key.apply(@status, app_id: @application.id)
     end
 
     test 'succeeds if no application key is defined and blank one is passed' do
-      assert Key.apply(@status, :app_key => '')
+      assert Key.apply(@status, app_id: @application.id, app_key: '')
     end
 
     test 'succeeds if one application key is defined and the same is passed' do
       application_key = @application.create_key
-      assert Key.apply(@status, :app_key => application_key)
+      assert Key.apply(@status, app_id: @application.id, app_key: application_key)
     end
 
     test 'succeeds if multiple application keys are defined and one of them is passed' do
       application_key_one = @application.create_key
       application_key_two = @application.create_key
 
-      assert Key.apply(@status, :app_key => application_key_one)
-      assert Key.apply(@status, :app_key => application_key_two)
+      assert Key.apply(@status, app_id: @application.id, app_key: application_key_one)
+      assert Key.apply(@status, app_id: @application.id, app_key: application_key_two)
     end
 
     test 'fails if application key is defined but not passed' do
       @application.create_key
 
-      assert !Key.apply(@status, {})
+      assert !Key.apply(@status, app_id: @application.id)
 
       assert_equal 'application_key_invalid',    @status.rejection_reason_code
       assert_equal 'application key is missing', @status.rejection_reason_text
@@ -51,13 +51,13 @@ module Validators
     test 'fails if invalid application key is passed' do
       @application.create_key('foo')
 
-      assert !Key.apply(@status, :app_key => 'bar')
+      assert !Key.apply(@status, app_id: @application.id, app_key: 'bar')
 
       assert_equal 'application_key_invalid',          @status.rejection_reason_code
       assert_equal 'application key "bar" is invalid', @status.rejection_reason_text
     end
 
-    test 'succeeds if service backend version is 1, even when invalid keys are passed' do
+    test 'fails if invalid application key is passed, even when service backend version is 1' do
       service = Service.save!(:provider_key => 'provider_key',
                               :id => next_id,
                               :backend_version => 1)
@@ -71,7 +71,10 @@ module Validators
 
       application.create_key('foo')
 
-      assert Key.apply(status, :app_key => 'non_registered_key')
+      assert !Key.apply(status, app_id: application.id, app_key: 'non_registered_key')
+
+      assert_equal 'user_key_invalid',          status.rejection_reason_code
+      assert_equal 'user key is missing', status.rejection_reason_text
     end
   end
 end

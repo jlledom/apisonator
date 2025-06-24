@@ -20,13 +20,13 @@ class BackendVersionTest < Test::Unit::TestCase
     Application.save_id_by_key(@service_id, "user_key_#{@application.id}", @application.id)
   end
 
-  test 'test app_id and user_key are exchangeable regardless of the backend_version' do
+  test 'test app_id and user_key are not exchangeable regardless and are bound to the backend_version' do
     Service.save! id: @service.id, provider_key: @provider_key, backend_version: '1'
 
     get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id
 
-    assert_authorized
+    assert_not_authorized
 
     get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :user_key     => "user_key_#{@application.id}"
@@ -43,7 +43,7 @@ class BackendVersionTest < Test::Unit::TestCase
     get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :user_key     => "user_key_#{@application.id}"
 
-    assert_authorized
+    assert_not_authorized
   end
 
   test 'service originally on backend_version 2 with apps with app_key does not complain about missing app_key when changed to backend_version 1' do
@@ -83,7 +83,6 @@ class BackendVersionTest < Test::Unit::TestCase
   test 'when backend_version is not declared should behave like backend_version two regarding the presence of app_key' do
     if @service.backend_version.nil? || @service.backend_version.empty?
       application_key_one = @application.create_key
-      _application_key_two = @application.create_key
 
       get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id,
@@ -102,7 +101,6 @@ class BackendVersionTest < Test::Unit::TestCase
     Service.save! id: @service.id, provider_key: @provider_key, backend_version: '2'
 
     application_key_one = @application.create_key
-    application_key_two = @application.create_key
 
     get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id
@@ -118,7 +116,7 @@ class BackendVersionTest < Test::Unit::TestCase
 
     Service.save! id: @service.id, provider_key: @provider_key, backend_version: 'oauth'
 
-    get '/transactions/authorize.xml', :provider_key => @provider_key,
+    get '/transactions/oauth_authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id
 
     assert_authorized
@@ -128,7 +126,6 @@ class BackendVersionTest < Test::Unit::TestCase
     Service.save! id: @service.id, provider_key: @provider_key, backend_version: '2'
 
     application_key_one = @application.create_key
-    application_key_two = @application.create_key
 
     get '/transactions/authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id
@@ -144,13 +141,13 @@ class BackendVersionTest < Test::Unit::TestCase
 
     Service.save! id: @service.id, provider_key: @provider_key, backend_version: 'oauth'
 
-    get '/transactions/authorize.xml', :provider_key => @provider_key,
+    get '/transactions/oauth_authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id,
                                        :app_key      => 'invalid_key'
 
     assert_not_authorized
 
-    get '/transactions/authorize.xml', :provider_key => @provider_key,
+    get '/transactions/oauth_authorize.xml', :provider_key => @provider_key,
                                        :app_id       => @application.id,
                                        :app_key      => application_key_one
 
