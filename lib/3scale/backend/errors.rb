@@ -260,7 +260,11 @@ module ThreeScale
 
     class UserKeyInvalid < Error
       def initialize(key)
-        super %(user key "#{key}" is invalid)
+        if key.blank?
+          super 'user key is missing'.freeze
+        else
+          super %(user key "#{key}" is invalid)
+        end
       end
     end
 
