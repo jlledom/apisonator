@@ -67,10 +67,10 @@ module ThreeScale
         service_id = service.id
 
         app_id = params[:app_id]
-        # TODO: make sure params are nil if they are empty up the call stack
+        # Make sure params are nil if they are empty up the call stack
         # Note: app_key is an exception, as it being empty is semantically
         # significant.
-        params[:app_id] = nil if app_id && app_id.empty?
+        params[:app_id] = nil if app_id&.empty?
 
         # While OIDC without an app_id makes little sense, we would break existing
         # behaviour when calling non oauth_auth*.xml endpoints if we returned an
