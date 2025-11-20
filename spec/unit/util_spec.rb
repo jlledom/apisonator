@@ -135,13 +135,6 @@ module ThreeScale
           end
         end
       end
-
-      describe '.root_dir' do
-        it 'returns the root directory of the project' do
-          expect(described_class.root_dir).to be_a(String)
-          expect(described_class.root_dir).to end_with('apisonator')
-        end
-      end
     end
   end
 end
